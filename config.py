@@ -1,0 +1,13 @@
+# Настройки для Кинопоиска
+BASE_URL = "https://www.kinopoisk.ru"
+API_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/films/301"
+
+# Тестовые данные
+VALID_MOVIE = "Интерстеллар"
+INVALID_MOVIE = "НесуществующийФильм123"
+ENGLISH_MOVIE = "Inception"
+MOVIE_ID = 12345
+WATCHLIST_MOVIE_ID = 67890
+
+# Токен авторизации (замените на реальный тестовый)
+AUTH_TOKEN = ""
