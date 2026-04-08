@@ -54,7 +54,8 @@ class TestKinopoiskAPI:
     def test_add_to_watchlist(self):
         with allure.step(f"Добавляем фильм ID {WATCHLIST_MOVIE_ID} в список"):
             response_data, status_code = ApiHelper.add_to_watchlist(
-                WATCHLIST_MOVIE_ID)
+                WATCHLIST_MOVIE_ID
+            )
 
         with allure.step("Проверяем успешный ответ"):
             assert status_code == 201, f"Ожидался код 201, получен {
@@ -88,11 +89,25 @@ class TestKinopoiskAPI:
                 status_code}"
 
         with allure.step("Проверяем результаты"):
-            assert "results" in response_data and len(response_data["results"
-                                                                    ]) > 0
+            assert (
+                "results" in response_data
+                and len(response_data["results"]) > 0
+            )
             first_result = response_data["results"][0]
-            assert first_result.get("original_title", ""
-                                    ).lower() == ENGLISH_MOVIE.lower()
-            assert "title" in first_result  # Русское название
+            assert (
+                first_result.get("original_title", "").lower()
+                == ENGLISH_MOVIE.lower()
+            )
+            assert "title" in first_result
             assert "year" in first_result
             assert "rating" in first_result
+
+    @allure.title("Проверка отображения результатов поиска")
+    def test_search_results_display(self):
+        with allure.step("Выполняем поиск"):
+            self.page.search_movie("Интерстеллар")
+
+        with allure.step("Проверяем, что результаты найдены"):
+            assert (
+                self.page.are_search_results_present()
+            ), "Результаты поиска не отобразились"

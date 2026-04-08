@@ -8,10 +8,7 @@ class ApiHelper:
     @staticmethod
     def search_movie(title: str) -> dict:
         """Ищет фильм по названию."""
-        response = requests.get(
-            f"{API_URL}/search",
-            params={"query": title}
-        )
+        response = requests.get(f"{API_URL}/search", params={"query": title})
         return response.json(), response.status_code
 
     @staticmethod
@@ -25,7 +22,7 @@ class ApiHelper:
         """Добавляет фильм в список 'Буду смотреть'."""
         headers = {
             "Authorization": f"Bearer {AUTH_TOKEN}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
         data = {"movie_id": movie_id, "action": "add"}
         response = requests.post(f"{API_URL

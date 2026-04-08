@@ -10,9 +10,13 @@ class KinopoiskMainPage:
     FILTER_ITEM = (By.CSS_SELECTOR, ".filter-item, .filter-link")
     HELP_TEXT = (
         By.XPATH,
-        "//*[contains(text(), 'помощь') or contains(text(), 'подсказка')]")
+        "//*[contains(text(), 'помощь') or contains(text(), 'подсказка')]",
+    )
     ALL_LINKS = (By.TAG_NAME, "a")
-    SEARCH_RESULTS = (By.CSS_SELECTOR, ".search-results__item")
+    SEARCH_RESULTS = (
+        By.XPATH,
+        "//p[@class='header' and contains(text(), 'Скорее всего, вы ищете')]",
+    )
 
     def __init__(self, driver, wait):
         self.driver = driver
@@ -43,8 +47,8 @@ class KinopoiskMainPage:
         links = self.driver.find_elements(*self.ALL_LINKS)
         return [link for link in links if link.get_attribute("href")]
 
-    def is_search_results_loaded(self):
-        """Проверяет загрузку результатов поиска."""
+    def are_search_results_present(self):
+        """Проверяет, что результаты поиска загружены."""
         try:
             self.wait.until(
                 EC.presence_of_element_located(self.SEARCH_RESULTS)

@@ -1,7 +1,7 @@
 import allure
 import pytest
 from page.pages import KinopoiskMainPage
-from config import VALID_MOVIE
+from config import BASE_URL, VALID_MOVIE
 
 
 @allure.feature("UI-тесты Кинопоиска")
@@ -17,10 +17,13 @@ class TestKinopoiskUI:
             self.page.search_movie(VALID_MOVIE)
 
         with allure.step("Проверяем загрузку результатов"):
-            assert self.page.is_search_results_loaded(), "Результаты поиска не загрузились"
+            assert (
+                self.page.is_search_results_loaded()
+            ), "Результаты поиска не загрузились"
 
     @allure.title("Проверка работы фильтров")
     def test_filters_functionality(self):
+        self.page.driver.get(f"{BASE_URL}/search")
         with allure.step("Открываем страницу поиска"):
             self.page.driver.get("/search")
 
@@ -38,12 +41,12 @@ class TestKinopoiskUI:
                 pytest.skip("Пояснительные тексты не найдены")
             assert len(help_texts) > 0, "Не найдены пояснительные тексты"
 
-    @allure.title("Проверка активности всех ссылок")
-    def test_all_links_active(self):
-        with allure.step("Получаем все ссылки"):
-            links = self.page.get_all_links()
+    @allure.title("Проверка перехода по основной ссылке")
+    def test_main_link_navigation(self):
+        main_link = self.page.get_main_link()
+        main_link.click()
 
-        with allure.step("Проверяем первые 3 ссылки"):
-            for link in links[:3]:
-                link_url = link.get_attribute("href")
-                self.page.driver.get(link_url)
+        self.page.wait.until(lambda driver: driver.current_url != BASE_URL)
+        assert (
+            "new-page" in self.page.driver.current_url
+        ), "Неверный URL после перехода"
