@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class KinopoiskMainPage:
@@ -22,6 +24,10 @@ class KinopoiskMainPage:
         self.driver = driver
         self.wait = wait
 
+    def open(self, url: str) -> None:
+        """Открыть страницу по указанному URL"""
+        self.driver.get(url)
+
     def search_movie(self, movie_title):
         """Выполняет поиск фильма."""
         search_input = self.wait.until(
@@ -30,6 +36,27 @@ class KinopoiskMainPage:
         search_input.clear()
         search_input.send_keys(movie_title)
         search_input.submit()
+
+    def search_movie_name(self, movie_title: str) -> None:
+        """Выполнить поиск фильма по названию"""
+        search_input = self.wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".search-input"))
+        )
+        search_input.clear()
+        search_input.send_keys(movie_title)
+        search_input.submit()
+
+    def is_search_results_loaded(self) -> bool:
+        """Проверить, загрузились ли результаты поиска"""
+        try:
+            self.wait.until(
+                EC.presence_of_all_elements_located(
+                    (By.CSS_SELECTOR, ".search-result-item")
+                )
+            )
+            return True
+        except TimeoutException:
+            return False
 
     def click_filter(self):
         """Кликает на первый доступный фильтр."""
@@ -56,3 +83,35 @@ class KinopoiskMainPage:
             return True
         except:
             return False
+
+    def get_main_link(self) -> WebElement:
+        """Возвращает элемент — главную ссылку (например, логотип Кинопоиска).
+        :return: WebElement — элемент ссылки"""
+        try:
+            main_link = self.driver.find_element(
+                By.CSS_SELECTOR, ".header__logo a"
+            )
+            return main_link
+        except NoSuchElementException:
+            raise Exception("Главная ссылка (логотип) не найдена на странице")
+
+    def apply_year_filter(self, year: str) -> None:
+        """Применить фильтр по году (ввод в поле)"""
+        year_input = self.wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".year-filter-input"))
+        )
+        year_input.clear()
+        year_input.send_keys(year)
+
+        apply_btn = self.driver.find_element(
+            By.CSS_SELECTOR, ".apply-filters-btn"
+        )
+        apply_btn.click()
+
+    def get_movie_count(self) -> int:
+        """Получить количество фильмов в результатах"""
+        movies = self.wait.until(
+            EC.presence_of_all_elements_located(
+                (By.CSS_SELECTOR, ".movie-item")
+            ))
+        return len(movies)

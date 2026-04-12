@@ -10,4 +10,4 @@ MOVIE_ID = 12345
 WATCHLIST_MOVIE_ID = 67890
 
 # Токен авторизации (замените на реальный тестовый)
-AUTH_TOKEN = ""
+AUTH_TOKEN = "37de3c7d-80e9-461d-8ce2-1cc2dc97cc31"

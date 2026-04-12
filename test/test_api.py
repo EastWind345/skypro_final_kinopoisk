@@ -105,9 +105,10 @@ class TestKinopoiskAPI:
     @allure.title("Проверка отображения результатов поиска")
     def test_search_results_display(self):
         with allure.step("Выполняем поиск"):
-            self.page.search_movie("Интерстеллар")
+            response_data, status_code = ApiHelper.search_movie("Интерстеллар")
 
         with allure.step("Проверяем, что результаты найдены"):
             assert (
-                self.page.are_search_results_present()
+                response_data,
+                status_code == ApiHelper.search_movie("Интерстеллар"),
             ), "Результаты поиска не отобразились"

@@ -1,7 +1,10 @@
 import allure
 import pytest
 from page.pages import KinopoiskMainPage
-from config import BASE_URL, VALID_MOVIE
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from config import BASE_URL
 
 
 @allure.feature("UI-тесты Кинопоиска")
@@ -13,25 +16,24 @@ class TestKinopoiskUI:
 
     @allure.title("Проверка поисковой строки")
     def test_search_bar_functionality(self):
-        with allure.step("Выполняем поиск фильма"):
-            self.page.search_movie(VALID_MOVIE)
-
-        with allure.step("Проверяем загрузку результатов"):
-            assert (
-                self.page.is_search_results_loaded()
-            ), "Результаты поиска не загрузились"
+        self.page.open(BASE_URL)
+        search_input = WebDriverWait(
+            self.page.search_movie("Интерстеллар"), 10
+        ).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".search-input")))
+        search_input.clear()
+        search_input.send_keys("Интерстеллар")
+        search_input.submit()
+        assert (
+            self.page.is_search_results_loaded()
+        ), "Результаты поиска не загрузились"
 
     @allure.title("Проверка работы фильтров")
     def test_filters_functionality(self):
-        self.page.driver.get(f"{BASE_URL}/search")
-        with allure.step("Открываем страницу поиска"):
-            self.page.driver.get("/search")
-
-        with allure.step("Кликаем на фильтр"):
-            self.page.click_filter()
-
-        with allure.step("Проверяем обновление результатов"):
-            assert self.page.is_search_results_loaded(), "Фильтры не сработали"
+        self.page.open()
+        initial_count = self.page.get_movie_count()
+        self.page.apply_year_filter("2023")
+        final_count = self.page.get_movie_count()
+        assert final_count < initial_count, "Фильтрация не сработала"
 
     @allure.title("Проверка наличия пояснительных текстов")
     def test_help_text_presence(self):
