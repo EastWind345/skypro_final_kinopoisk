@@ -37,6 +37,18 @@ class KinopoiskMainPage:
         search_input.send_keys(movie_title)
         search_input.submit()
 
+    def get_text_first(self):
+        first = self.wait.until(
+            EC.presence_of_element_located(
+                (By.XPATH, '//div[@class="element most_wanted"]')))
+        return first.text
+    
+    def get_error(self):
+        first = self.wait.until(
+            EC.presence_of_element_located(
+                (By.XPATH, '//div[@class="block_left_pad"]')))
+        return first.text
+
     def search_movie_name(self, movie_title: str) -> None:
         """Выполнить поиск фильма по названию"""
         search_input = self.wait.until(
