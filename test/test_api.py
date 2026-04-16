@@ -1,12 +1,11 @@
+import pytest
 import allure
 from page.api_helper import ApiHelper
-from config import VALID_MOVIE, INVALID_MOVIE, ENGLISH_MOVIE
-from config import MOVIE_ID, WATCHLIST_MOVIE_ID
+from config import VALID_MOVIE, MOVIE_ID, INVALID_MOVIE
 
 
 @allure.feature("API-тесты Кинопоиска")
 class TestKinopoiskAPI:
-
 
     def setup_method(self):
         """Инициализация ApiHelper перед каждым тестом"""
