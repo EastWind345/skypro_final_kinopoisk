@@ -40,13 +40,17 @@ class KinopoiskMainPage:
     def get_text_first(self):
         first = self.wait.until(
             EC.presence_of_element_located(
-                (By.XPATH, '//div[@class="element most_wanted"]')))
+                (By.XPATH, '//div[@class="element most_wanted"]')
+            )
+        )
         return first.text
-    
+
     def get_error(self):
         first = self.wait.until(
             EC.presence_of_element_located(
-                (By.XPATH, '//div[@class="block_left_pad"]')))
+                (By.XPATH, '//div[@class="block_left_pad"]')
+            )
+        )
         return first.text
 
     def search_movie_name(self, movie_title: str) -> None:
@@ -125,5 +129,6 @@ class KinopoiskMainPage:
         movies = self.wait.until(
             EC.presence_of_all_elements_located(
                 (By.CSS_SELECTOR, ".movie-item")
-            ))
+            )
+        )
         return len(movies)
