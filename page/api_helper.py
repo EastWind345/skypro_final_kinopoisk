@@ -29,8 +29,7 @@ class ApiHelper:
                              params={"keyword": title})
 
     def get_movie_reviews(self, movie_id):
-        return self._request("GET", f"api/v2.1/films/{movie_id}/reviews")
+        return self._request("GET", f"api/v2.2/films/{movie_id}/reviews")
 
-    def add_to_watchlist(self, movie_id):
-        return self._request("POST", "api/v2.1/users/watchlist",
-                             json={"filmId": movie_id})
+    def get_movie_id(self, movie_id):
+        return self._request("GET", f"api/v2.2/films/{movie_id}")

@@ -97,7 +97,7 @@ class KinopoiskMainPage:
                 EC.presence_of_element_located(self.SEARCH_RESULTS)
             )
             return True
-        except:
+        except TimeoutException:
             return False
 
     def get_main_link(self) -> WebElement:

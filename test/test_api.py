@@ -1,7 +1,5 @@
-import pytest
 import allure
 from page.api_helper import ApiHelper
-from config import VALID_MOVIE, MOVIE_ID, INVALID_MOVIE
 
 
 @allure.feature("API-тесты Кинопоиска")
@@ -27,9 +25,9 @@ class TestKinopoiskAPI:
         assert status_code == 200
         assert "reviews" in data or "items" in data
 
-    @allure.title("Добавление фильма в список просмотра")
-    def test_add_to_watchlist(self):
-        data, status_code = self.api.add_to_watchlist(self.MOVIE_ID)
+    @allure.title("Получение информации о фильме")
+    def test_get_movie_id(self):
+        data, status_code = self.api.get_movie_id(self.MOVIE_ID)
         assert status_code in [200, 201]
 
     @allure.title("Поиск по несуществующему названию")
