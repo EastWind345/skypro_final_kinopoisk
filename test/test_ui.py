@@ -5,6 +5,7 @@ from config import BASE_URL
 
 
 @allure.feature("UI-тесты Кинопоиска")
+@pytest.mark.ui
 class TestKinopoiskUI:
 
     @pytest.fixture(autouse=True)

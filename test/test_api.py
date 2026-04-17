@@ -1,8 +1,10 @@
 import allure
+import pytest
 from page.api_helper import ApiHelper
 
 
 @allure.feature("API-тесты Кинопоиска")
+@pytest.mark.api
 class TestKinopoiskAPI:
 
     def setup_method(self):

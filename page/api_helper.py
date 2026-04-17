@@ -24,12 +24,12 @@ class ApiHelper:
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}, 0
 
-    def search_movie(self, title):
+    def search_movie(self, title: str):
         return self._request("GET", "api/v2.1/films/search-by-keyword",
                              params={"keyword": title})
 
-    def get_movie_reviews(self, movie_id):
+    def get_movie_reviews(self, movie_id: int):
         return self._request("GET", f"api/v2.2/films/{movie_id}/reviews")
 
-    def get_movie_id(self, movie_id):
+    def get_movie_id(self, movie_id: int):
         return self._request("GET", f"api/v2.2/films/{movie_id}")
